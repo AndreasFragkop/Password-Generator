@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .option {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .option label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .password-display {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            word-break: break-all;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+        }
+        
+        .strength-meter {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .strength-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .weak { background: #dc3545; }
+        .medium { background: #ffc107; }
+        .strong { background: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Password Generator</h1>
+        
+        <div class="option">
+            <label for="length">Password Length:</label>
+            <input type="number" id="length" value="12" min="4" max="50">
+        </div>
+        
+        <div class="option">
+            <label for="uppercase">Include Uppercase Letters (A-Z)</label>
+            <input type="checkbox" id="uppercase" checked>
+        </div>
+        
+        <div class="option">
+            <label for="lowercase">Include Lowercase Letters (a-z)</label>
+            <input type="checkbox" id="lowercase" checked>
+        </div>
+        
+        <div class="option">
+            <label for="numbers">Include Numbers (0-9)</label>
+            <input type="checkbox" id="numbers" checked>
+        </div>
+        
+        <div class="option">
+            <label for="symbols">Include Symbols (!@#$%^&*)</label>
+            <input type="checkbox" id="symbols">
+        </div>
+        
+        <button class="generate-btn" onclick="generatePassword()">Generate Password</button>
+        
+        <div class="password-display" id="passwordDisplay">
+            Click "Generate Password" to create your secure password
+            <button class="copy-btn" id="copyBtn" onclick="copyPassword()" style="display: none;">Copy</button>
+        </div>
+        
+        <div class="strength-meter" id="strengthMeter" style="display: none;">
+            <div>Password Strength: <span id="strengthText">Medium</span></div>
+            <div class="strength-bar">
+                <div class="strength-fill" id="strengthFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
