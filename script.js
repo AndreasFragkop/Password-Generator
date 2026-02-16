@@ -1,5 +1,42 @@
 
+const WORD_LIST = [
+    'apple','arrow','baker','beach','blaze','bloom','brisk','cabin','candy','cargo',
+    'cider','cloud','coral','dance','delta','dizzy','drift','eagle','ember','fable',
+    'fancy','field','flame','fleet','flint','flora','frost','glade','glint','grain',
+    'grape','green','harbor','honey','ivory','jolly','karma','lunar','maple','mellow',
+    'minty','mirth','naval','noble','oasis','olive','orbit','pearl','piano','poppy',
+    'prism','quill','quiet','rainy','raven','river','robin','royal','sable','salty',
+    'satin','scope','shade','shine','silky','sketch','slope','smile','solar','spice',
+    'sprig','storm','swift','tango','tiger','toasty','token','trail','tulip','vivid',
+    'vocal','whale','wheat','windy','witty','zesty'
+];
+
+function getSelectedMode() {
+    const selected = document.querySelector('input[name="mode"]:checked');
+    return selected ? selected.value : 'password';
+}
+
+function setModeUI() {
+    const isPassphrase = getSelectedMode() === 'passphrase';
+    document.getElementById('lengthOption').classList.toggle('is-hidden', isPassphrase);
+    document.getElementById('wordCountOption').classList.toggle('is-hidden', !isPassphrase);
+    document.getElementById('separatorOption').classList.toggle('is-hidden', !isPassphrase);
+}
+
+function renderPassword(password) {
+    const displayElement = document.getElementById('passwordDisplay');
+    displayElement.textContent = password;
+    document.getElementById('copyBtn').style.display = 'block';
+    updateStrengthMeter(password);
+}
+
 function generatePassword() {
+    const mode = getSelectedMode();
+    if (mode === 'passphrase') {
+        generatePassphrase();
+        return;
+    }
+
     const length = parseInt(document.getElementById('length').value);
     const includeUppercase  = document.getElementById('uppercase').checked;
     const includeLowercase  = document.getElementById('lowercase').checked;
@@ -29,21 +66,52 @@ function generatePassword() {
         password += charset[randomIndex];
     }
 
-    const displayElement = document.getElementById('passwordDisplay');
-    displayElement.textContent = password;
-
-    document.getElementById('copyBtn').style.display = 'block';
-
-    updateStrengthMeter(password, includeUppercase, includeLowercase, includenumbers, includesymbols);
+    renderPassword(password);
 
 }
 
-function updateStrengthMeter(password, hasUpper, hasLower, hasNumbers, hasSymbols) {
+function generatePassphrase() {
+    const wordCount = parseInt(document.getElementById('wordCount').value);
+    const separatorSetting = document.getElementById('separator').value;
+    const separators = ['-','.', '_', ' '];
+
+    if (!wordCount || wordCount < 2) {
+        alert('Please choose at least 2 words!');
+        return;
+    }
+
+    const words = [];
+    for (let i = 0; i < wordCount; i++) {
+        const word = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+        words.push(word);
+    }
+
+    let passphrase = '';
+    if (separatorSetting === 'random') {
+        for (let i = 0; i < words.length; i++) {
+            passphrase += words[i];
+            if (i < words.length - 1) {
+                passphrase += separators[Math.floor(Math.random() * separators.length)];
+            }
+        }
+    } else {
+        const sep = separatorSetting === 'space' ? ' ' : separatorSetting;
+        passphrase = words.join(sep);
+    }
+
+    renderPassword(passphrase);
+}
+
+function updateStrengthMeter(password) {
     const meter  = document.getElementById('strengthMeter');
     const fill   = document.getElementById('strengthFill');
     const text   = document.getElementById('strengthText');
 
     let score = 0;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSymbols = /[^A-Za-z0-9]/.test(password);
 
     if (password.length >= 8) score += 1;
     if (password.length >= 12) score += 1;
@@ -72,25 +140,33 @@ function updateStrengthMeter(password, hasUpper, hasLower, hasNumbers, hasSymbol
     text.textContent     = strength;
     fill.style.width     = width;
     fill.className       = `strength-fill ${className}`;
-    meter.style.dysplay  = 'block';
+    meter.style.display  = 'block';
 
 }
 
 function copyPassword() {
     const passwordText = document.getElementById('passwordDisplay').textContent;
     navigator.clipboard.writeText(passwordText).then(() => {
-        const copyBtn             = document.getElementById('copyBnt');
+        const copyBtn             = document.getElementById('copyBtn');
         const originalText        = copyBtn.textContent;
+        const originalBg          = copyBtn.style.background;
         copyBtn.textContent       = 'copied';
         copyBtn.style.background  = '#28a745';
 
         setTimeout(() => {
             copyBtn.textContent       = originalText;
-            copyBtn.style.background  = '#28a745';
+            copyBtn.style.background  = originalBg;
         }, 2000);
     });    
 }
 
 window.addEventListener('load', function() {
+    setModeUI();
+    document.querySelectorAll('input[name="mode"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            setModeUI();
+            generatePassword();
+        });
+    });
     generatePassword();
 });
