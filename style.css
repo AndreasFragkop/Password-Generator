@@ -290,6 +290,12 @@ select:focus-visible {
     outline-offset: 3px;
 }
 
+.shortcut-hint {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
 .strength-meter {
     margin-top: 16px;
     text-align: left;

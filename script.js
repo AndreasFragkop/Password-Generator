@@ -90,23 +90,49 @@ function generatePassword() {
     const numbers       = '0123456789';
     const symbols       = '!@#$%^&*()_+-=[]{}|;:,.<>?';
 
-    let charset   = '';
-    let password  = '';
+    const enabledSets = [];
+    let charset = '';
 
-    if (includeUppercase) charset  += uppercase;
-    if (includeLowercase) charset  += lowercase;
-    if (includenumbers) charset    += numbers;
-    if (includesymbols) charset    += symbols;
+    if (includeUppercase) {
+        charset += uppercase;
+        enabledSets.push(uppercase);
+    }
+    if (includeLowercase) {
+        charset += lowercase;
+        enabledSets.push(lowercase);
+    }
+    if (includenumbers) {
+        charset += numbers;
+        enabledSets.push(numbers);
+    }
+    if (includesymbols) {
+        charset += symbols;
+        enabledSets.push(symbols);
+    }
 
     if (charset === '') {
         alert('Please select at least one character type!');
         return; 
     }
 
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length);
-        password += charset[randomIndex];
+    if (length < enabledSets.length) {
+        alert(`Length must be at least ${enabledSets.length} to include all selected character types.`);
+        return;
     }
+
+    const passwordChars = [];
+
+    // Ensure each selected set appears at least once.
+    enabledSets.forEach((set) => {
+        passwordChars.push(getRandomChar(set));
+    });
+
+    for (let i = passwordChars.length; i < length; i++) {
+        passwordChars.push(getRandomChar(charset));
+    }
+
+    shuffleArray(passwordChars);
+    const password = passwordChars.join('');
 
     renderPassword(password);
 
@@ -124,7 +150,7 @@ function generatePassphrase() {
 
     const words = [];
     for (let i = 0; i < wordCount; i++) {
-        const word = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+        const word = WORD_LIST[getRandomInt(WORD_LIST.length)];
         words.push(word);
     }
 
@@ -133,7 +159,7 @@ function generatePassphrase() {
         for (let i = 0; i < words.length; i++) {
             passphrase += words[i];
             if (i < words.length - 1) {
-                passphrase += separators[Math.floor(Math.random() * separators.length)];
+                passphrase += separators[getRandomInt(separators.length)];
             }
         }
     } else {
@@ -142,6 +168,29 @@ function generatePassphrase() {
     }
 
     renderPassword(passphrase);
+}
+
+function getRandomInt(max) {
+    if (max <= 0) return 0;
+    const array = new Uint32Array(1);
+    const limit = Math.floor(0x100000000 / max) * max;
+    let value = 0;
+    do {
+        window.crypto.getRandomValues(array);
+        value = array[0];
+    } while (value >= limit);
+    return value % max;
+}
+
+function getRandomChar(charset) {
+    return charset[getRandomInt(charset.length)];
+}
+
+function shuffleArray(items) {
+    for (let i = items.length - 1; i > 0; i--) {
+        const j = getRandomInt(i + 1);
+        [items[i], items[j]] = [items[j], items[i]];
+    }
 }
 
 function updateStrengthMeter(password) {
@@ -202,9 +251,38 @@ function copyPassword() {
     });    
 }
 
+function isTypingTarget(element) {
+    if (!element) return false;
+    const tag = element.tagName ? element.tagName.toLowerCase() : '';
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+    return element.isContentEditable === true;
+}
+
+function initKeyboardShortcuts() {
+    document.addEventListener('keydown', (event) => {
+        if (isTypingTarget(document.activeElement)) return;
+
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            generatePassword();
+            return;
+        }
+
+        const isCopyCombo = (event.key === 'c' || event.key === 'C') && (event.ctrlKey || event.metaKey);
+        if (isCopyCombo) {
+            const copyBtn = document.getElementById('copyBtn');
+            if (copyBtn && getComputedStyle(copyBtn).display !== 'none') {
+                event.preventDefault();
+                copyPassword();
+            }
+        }
+    });
+}
+
 window.addEventListener('load', function() {
     initThemeToggle();
     setModeUI();
+    initKeyboardShortcuts();
     document.querySelectorAll('input[name="mode"]').forEach((radio) => {
         radio.addEventListener('change', () => {
             setModeUI();
