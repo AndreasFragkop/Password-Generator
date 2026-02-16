@@ -68,8 +68,11 @@ function initThemeToggle() {
 function renderPassword(password) {
     const displayElement = document.getElementById('passwordDisplay');
     displayElement.textContent = password;
-    document.getElementById('copyBtn').style.display = 'block';
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.style.display = 'block';
+    resetCopyButton(copyBtn);
     updateStrengthMeter(password);
+
 }
 
 function generatePassword() {
@@ -84,26 +87,31 @@ function generatePassword() {
     const includeLowercase  = document.getElementById('lowercase').checked;
     const includenumbers    = document.getElementById('numbers').checked;
     const includesymbols    = document.getElementById('symbols').checked;
+    const excludeSimilar    = document.getElementById('excludeSimilar').checked;
     
     const uppercase     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lowercase     = 'abcdefghijklmnopqrstuvwxyz';
     const numbers       = '0123456789';
     const symbols       = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+    const similarChars  = new Set(['O','0','l','1','I']);
 
     const enabledSets = [];
     let charset = '';
 
     if (includeUppercase) {
-        charset += uppercase;
-        enabledSets.push(uppercase);
+        const set = excludeSimilar ? uppercase.split('').filter(c => !similarChars.has(c)).join('') : uppercase;
+        charset += set;
+        enabledSets.push(set);
     }
     if (includeLowercase) {
-        charset += lowercase;
-        enabledSets.push(lowercase);
+        const set = excludeSimilar ? lowercase.split('').filter(c => !similarChars.has(c)).join('') : lowercase;
+        charset += set;
+        enabledSets.push(set);
     }
     if (includenumbers) {
-        charset += numbers;
-        enabledSets.push(numbers);
+        const set = excludeSimilar ? numbers.split('').filter(c => !similarChars.has(c)).join('') : numbers;
+        charset += set;
+        enabledSets.push(set);
     }
     if (includesymbols) {
         charset += symbols;
@@ -132,10 +140,7 @@ function generatePassword() {
     }
 
     shuffleArray(passwordChars);
-    const password = passwordChars.join('');
-
-    renderPassword(password);
-
+    renderPassword(passwordChars.join(''));
 }
 
 function generatePassphrase() {
@@ -233,22 +238,80 @@ function updateStrengthMeter(password) {
     fill.className       = `strength-fill ${className}`;
     meter.style.display  = 'block';
 
+    const entropyText = document.getElementById('entropyText');
+    if (entropyText) {
+        const bits = estimateEntropyBits(password);
+        entropyText.textContent = bits ? `(${bits} bits)` : '';
+    }
+}
+
+function estimateEntropyBits(password) {
+    if (!password) return 0;
+    const length = password.replace(/\n/g, '').length;
+    if (length === 0) return 0;
+    const unique = new Set(password.replace(/\n/g, '').split(''));
+    const pool = unique.size;
+    if (pool === 0) return 0;
+    return Math.round(length * Math.log2(pool));
+}
+
+let toastTimeoutId = null;
+let copyTimeoutId = null;
+
+function showToast(message, isError = false) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.toggle('is-error', isError);
+    toast.classList.add('show');
+
+    if (toastTimeoutId) {
+        clearTimeout(toastTimeoutId);
+    }
+
+    toastTimeoutId = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2000);
+}
+
+function resetCopyButton(copyBtn) {
+    const btn = copyBtn || document.getElementById('copyBtn');
+    if (!btn) return;
+    const defaultLabel = btn.dataset.default || 'Copy Password';
+    btn.textContent = defaultLabel;
+    btn.disabled = false;
+}
+
+function startCopyCooldown(copyBtn, duration = 2000) {
+    const btn = copyBtn || document.getElementById('copyBtn');
+    if (!btn) return;
+    if (copyTimeoutId) {
+        clearTimeout(copyTimeoutId);
+    }
+    btn.textContent = 'Copied';
+    btn.disabled = true;
+    copyTimeoutId = setTimeout(() => {
+        resetCopyButton(btn);
+    }, duration);
 }
 
 function copyPassword() {
     const passwordText = document.getElementById('passwordDisplay').textContent;
-    navigator.clipboard.writeText(passwordText).then(() => {
-        const copyBtn             = document.getElementById('copyBtn');
-        const originalText        = copyBtn.textContent;
-        const originalBg          = copyBtn.style.background;
-        copyBtn.textContent       = 'copied';
-        copyBtn.style.background  = '#28a745';
+    const copyBtn = document.getElementById('copyBtn');
 
-        setTimeout(() => {
-            copyBtn.textContent       = originalText;
-            copyBtn.style.background  = originalBg;
-        }, 2000);
-    });    
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        showToast('Clipboard unavailable', true);
+        return;
+    }
+
+    navigator.clipboard.writeText(passwordText).then(() => {
+        showToast('Copied to clipboard');
+        startCopyCooldown(copyBtn);
+    }).catch(() => {
+        showToast('Copy failed', true);
+        resetCopyButton(copyBtn);
+    });
 }
 
 function isTypingTarget(element) {

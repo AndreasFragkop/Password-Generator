@@ -258,6 +258,7 @@ select:focus-visible {
     font-family: "JetBrains Mono", "Courier New", monospace;
     font-size: 16px;
     word-break: break-all;
+    white-space: pre-wrap;
     min-height: 56px;
     display: flex;
     align-items: center;
@@ -285,11 +286,45 @@ select:focus-visible {
     box-shadow: 0 8px 20px rgba(17, 24, 39, 0.2);
 }
 
+.copy-btn-main:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 .copy-btn-main:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
 
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--text-strong);
+    color: var(--button-text);
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.is-error {
+    background: #e35b5b;
+    color: #ffffff;
+}
 .shortcut-hint {
     margin-top: 12px;
     font-size: 0.85rem;

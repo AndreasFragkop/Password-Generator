@@ -76,6 +76,15 @@
             <label for="symbols">Include Symbols (!@#$%^&*)</label>
             <input type="checkbox" id="symbols">
         </div>
+
+        <div class="option">
+            <label for="excludeSimilar">Exclude Similar Characters (O/0, l/1, I)</label>
+            <input type="checkbox" id="excludeSimilar">
+        </div>
+
+
+
+
         
         <button class="generate-btn" onclick="generatePassword()">Generate Password</button>
         
@@ -83,12 +92,13 @@
             Click "Generate Password" to create your secure password
         </div>
         <div class="strength-meter" id="strengthMeter" style="display: none;">
-            <div>Password Strength: <span id="strengthText">Medium</span></div>
+            <div>Password Strength: <span id="strengthText">Medium</span> <span id="entropyText"></span></div>
             <div class="strength-bar">
                 <div class="strength-fill" id="strengthFill"></div>
             </div>
         </div>
-        <button class="copy-btn-main" id="copyBtn" onclick="copyPassword()" style="display: none;">Copy Password</button>
+        <button class="copy-btn-main" id="copyBtn" onclick="copyPassword()" data-default="Copy Password" style="display: none;">Copy Password</button>
+        <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
     </div>
 
     <!-- Link to external JavaScript file -->
