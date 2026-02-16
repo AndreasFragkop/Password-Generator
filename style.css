@@ -21,6 +21,27 @@
     --shadow: 0 16px 40px rgba(28, 31, 38, 0.08);
 }
 
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: radial-gradient(circle at top, #1b1e27 0%, #141821 55%, #0f1219 100%);
+    --card: #171c24;
+    --text: #e6e9ef;
+    --text-strong: #f5f7fb;
+    --text-muted: #b7bfcc;
+    --border: #2a3242;
+    --border-soft: #232a38;
+    --input-bg: #0f141c;
+    --input-border: #2a3242;
+    --accent: #8aa2ff;
+    --accent-hover: #6f8dff;
+    --button-bg: #f5f7fb;
+    --button-text: #111827;
+    --panel: #11161f;
+    --panel-border: #2a3242;
+    --meter-bg: #232a38;
+    --shadow: 0 18px 42px rgba(4, 8, 16, 0.45);
+}
+
 *,
 *::before,
 *::after {
@@ -58,6 +79,78 @@ h1 {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-toggle-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px 6px 12px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.theme-toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.12);
+}
+
+.theme-toggle-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.theme-toggle-text {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.theme-toggle-track {
+    position: relative;
+    width: 42px;
+    height: 22px;
+    background: var(--border);
+    border-radius: 999px;
+    padding: 2px;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.theme-toggle-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--card);
+    transform: translateX(0);
+    transition: transform 0.2s;
+    box-shadow: 0 3px 8px rgba(17, 24, 39, 0.2);
+}
+
+.theme-toggle-btn[aria-pressed="true"] .theme-toggle-track {
+    background: var(--accent);
+}
+
+.theme-toggle-btn[aria-pressed="true"] .theme-toggle-thumb {
+    transform: translateX(18px);
 }
 
 .option {
@@ -172,21 +265,29 @@ select:focus-visible {
     color: var(--text);
 }
 
-.copy-btn {
-    position: absolute;
-    right: 10px;
+.copy-btn-main {
+    width: 100%;
+    padding: 14px 16px;
     background: var(--accent);
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 600;
+    margin-top: 12px;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-.copy-btn:hover {
+.copy-btn-main:hover {
     background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.2);
+}
+
+.copy-btn-main:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .strength-meter {

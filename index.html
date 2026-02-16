@@ -11,6 +11,15 @@
     <div class="container">
         <div class="header">
             <h1>Password Generator</h1>
+            <div class="theme-toggle">
+                <span class="theme-toggle-label">Theme</span>
+                <button class="theme-toggle-btn" id="themeToggle" type="button" aria-pressed="false">
+                    <span class="theme-toggle-text" id="themeToggleText">Light</span>
+                    <span class="theme-toggle-track" aria-hidden="true">
+                        <span class="theme-toggle-thumb"></span>
+                    </span>
+                </button>
+            </div>
         </div>
 
         <div class="option mode-toggle">
@@ -34,7 +43,7 @@
 
         <div class="option passphrase-option is-hidden" id="wordCountOption">
             <label for="wordCount">Word Count:</label>
-            <input type="number" id="wordCount" value="4" min="3" max="10">
+            <input type="number" id="wordCount" value="4" min="2" max="10">
         </div>
 
         <div class="option passphrase-option is-hidden" id="separatorOption">
@@ -72,15 +81,14 @@
         
         <div class="password-display" id="passwordDisplay">
             Click "Generate Password" to create your secure password
-            <button class="copy-btn" id="copyBtn" onclick="copyPassword()" style="display: none;">Copy</button>
         </div>
-        
         <div class="strength-meter" id="strengthMeter" style="display: none;">
             <div>Password Strength: <span id="strengthText">Medium</span></div>
             <div class="strength-bar">
                 <div class="strength-fill" id="strengthFill"></div>
             </div>
         </div>
+        <button class="copy-btn-main" id="copyBtn" onclick="copyPassword()" style="display: none;">Copy Password</button>
     </div>
 
     <!-- Link to external JavaScript file -->

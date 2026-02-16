@@ -23,6 +23,48 @@ function setModeUI() {
     document.getElementById('separatorOption').classList.toggle('is-hidden', !isPassphrase);
 }
 
+function initThemeToggle() {
+    const toggle = document.getElementById('themeToggle');
+    const toggleText = document.getElementById('themeToggleText');
+    if (!toggle) return;
+
+    const storageKey = 'password-generator-theme';
+    const storedTheme = localStorage.getItem(storageKey);
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const startingTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+
+    const applyTheme = (theme) => {
+        document.documentElement.setAttribute('data-theme', theme);
+        toggle.setAttribute('aria-pressed', theme === 'dark');
+        if (toggleText) {
+            toggleText.textContent = theme === 'dark' ? 'Dark' : 'Light';
+        }
+    };
+
+    applyTheme(startingTheme);
+
+    toggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(storageKey, nextTheme);
+        applyTheme(nextTheme);
+    });
+
+    if (!storedTheme && window.matchMedia) {
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        const handler = (event) => {
+            const savedTheme = localStorage.getItem(storageKey);
+            if (savedTheme) return;
+            applyTheme(event.matches ? 'dark' : 'light');
+        };
+        if (typeof media.addEventListener === 'function') {
+            media.addEventListener('change', handler);
+        } else if (typeof media.addListener === 'function') {
+            media.addListener(handler);
+        }
+    }
+}
+
 function renderPassword(password) {
     const displayElement = document.getElementById('passwordDisplay');
     displayElement.textContent = password;
@@ -127,7 +169,7 @@ function updateStrengthMeter(password) {
         strength   = 'weak';
         width      = '33%';
         className  = 'weak';
-    } else if (score <= 6) {
+    } else if (score <= 5) {
         strength   = 'medium';
         width      = '66%';
         className  = 'medium';
@@ -161,6 +203,7 @@ function copyPassword() {
 }
 
 window.addEventListener('load', function() {
+    initThemeToggle();
     setModeUI();
     document.querySelectorAll('input[name="mode"]').forEach((radio) => {
         radio.addEventListener('change', () => {

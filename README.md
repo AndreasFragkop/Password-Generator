@@ -8,6 +8,7 @@ A simple, client-side password generator with configurable length and character 
 - Passphrase mode (word list + separators)
 - Strength indicator
 - Copy to clipboard
+- Light/dark theme toggle
 
 ## Run
 Open `index.html` in your browser.
