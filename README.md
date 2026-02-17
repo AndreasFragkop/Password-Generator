@@ -4,6 +4,29 @@ A client-side password and passphrase generator with theme toggle, strength mete
 
 ![Password Generator](images/Password-generator.png)
 
+## Files
+- `index.html`
+- `style.css`
+- `script.js`
+- `images/Password-generator.png`
+
+## Run
+Open `index.html` in your browser.
+
+## How to Use
+1. Choose a mode: Password or Passphrase.
+2. Set the length (or word count for passphrases).
+3. Toggle character types and optional exclude-similar.
+4. Click **Generate Password**.
+5. Click **Copy Password** (or press Ctrl/Cmd + C).
+
+## How It Works
+- Generates passwords locally in the browser.
+- Uses `crypto.getRandomValues` for cryptographically secure randomness.
+- Ensures at least one character from each selected type when applicable.
+- Estimates strength and entropy based on the generated output.
+- Stores theme preference with localStorage.
+
 ## Features
 - Custom length (4-50) with guaranteed inclusion of selected character types
 - Uppercase, lowercase, numbers, symbols toggles
@@ -18,21 +41,6 @@ A client-side password and passphrase generator with theme toggle, strength mete
 - Remembers theme preference with localStorage
 - Auto-generates a password on page load
 
-## How to Use
-1. Choose a mode: Password or Passphrase.
-2. Set the length (or word count for passphrases).
-3. Toggle character types and optional exclude-similar.
-4. Click **Generate Password**.
-5. Click **Copy Password** (or press Ctrl/Cmd + C).
-
-## Run
-Open `index.html` in your browser.
-
 ## Notes
 - Passwords are generated locally in the browser.
 - If you select multiple character types, length must be at least the number of selected types.
-
-## Files
-- `index.html`
-- `style.css`
-- `script.js`

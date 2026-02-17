@@ -1,4 +1,5 @@
 
+// Word list for passphrase generation.
 const WORD_LIST = [
     'apple','arrow','baker','beach','blaze','bloom','brisk','cabin','candy','cargo',
     'cider','cloud','coral','dance','delta','dizzy','drift','eagle','ember','fable',
@@ -11,11 +12,13 @@ const WORD_LIST = [
     'vocal','whale','wheat','windy','witty','zesty'
 ];
 
+// Returns the active generation mode from the radio group.
 function getSelectedMode() {
     const selected = document.querySelector('input[name="mode"]:checked');
     return selected ? selected.value : 'password';
 }
 
+// Shows or hides mode-specific controls.
 function setModeUI() {
     const isPassphrase = getSelectedMode() === 'passphrase';
     document.getElementById('lengthOption').classList.toggle('is-hidden', isPassphrase);
@@ -23,6 +26,7 @@ function setModeUI() {
     document.getElementById('separatorOption').classList.toggle('is-hidden', !isPassphrase);
 }
 
+// Initializes the theme toggle and persists selection.
 function initThemeToggle() {
     const toggle = document.getElementById('themeToggle');
     const toggleText = document.getElementById('themeToggleText');
@@ -65,6 +69,7 @@ function initThemeToggle() {
     }
 }
 
+// Renders output, reveals copy button, and updates strength info.
 function renderPassword(password) {
     const displayElement = document.getElementById('passwordDisplay');
     displayElement.textContent = password;
@@ -75,6 +80,7 @@ function renderPassword(password) {
 
 }
 
+// Entry point for generation based on selected mode.
 function generatePassword() {
     const mode = getSelectedMode();
     if (mode === 'passphrase') {
@@ -89,6 +95,7 @@ function generatePassword() {
     const includesymbols    = document.getElementById('symbols').checked;
     const excludeSimilar    = document.getElementById('excludeSimilar').checked;
     
+    // Character pools (with optional similar-character filtering).
     const uppercase     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lowercase     = 'abcdefghijklmnopqrstuvwxyz';
     const numbers       = '0123456789';
@@ -143,6 +150,7 @@ function generatePassword() {
     renderPassword(passwordChars.join(''));
 }
 
+// Generates a multi-word passphrase using the word list.
 function generatePassphrase() {
     const wordCount = parseInt(document.getElementById('wordCount').value);
     const separatorSetting = document.getElementById('separator').value;
@@ -175,6 +183,7 @@ function generatePassphrase() {
     renderPassword(passphrase);
 }
 
+// Returns a secure random integer in [0, max).
 function getRandomInt(max) {
     if (max <= 0) return 0;
     const array = new Uint32Array(1);
@@ -187,10 +196,12 @@ function getRandomInt(max) {
     return value % max;
 }
 
+// Picks a random character from a charset.
 function getRandomChar(charset) {
     return charset[getRandomInt(charset.length)];
 }
 
+// Shuffles an array in-place (Fisher-Yates).
 function shuffleArray(items) {
     for (let i = items.length - 1; i > 0; i--) {
         const j = getRandomInt(i + 1);
@@ -198,6 +209,7 @@ function shuffleArray(items) {
     }
 }
 
+// Computes heuristic strength and updates the meter UI.
 function updateStrengthMeter(password) {
     const meter  = document.getElementById('strengthMeter');
     const fill   = document.getElementById('strengthFill');
@@ -245,6 +257,7 @@ function updateStrengthMeter(password) {
     }
 }
 
+// Estimates entropy using unique character pool size.
 function estimateEntropyBits(password) {
     if (!password) return 0;
     const length = password.replace(/\n/g, '').length;
@@ -258,6 +271,7 @@ function estimateEntropyBits(password) {
 let toastTimeoutId = null;
 let copyTimeoutId = null;
 
+// Shows a temporary status toast.
 function showToast(message, isError = false) {
     const toast = document.getElementById('toast');
     if (!toast) return;
@@ -275,6 +289,7 @@ function showToast(message, isError = false) {
     }, 2000);
 }
 
+// Resets copy button label/state.
 function resetCopyButton(copyBtn) {
     const btn = copyBtn || document.getElementById('copyBtn');
     if (!btn) return;
@@ -283,6 +298,7 @@ function resetCopyButton(copyBtn) {
     btn.disabled = false;
 }
 
+// Temporarily disables copy button after copying.
 function startCopyCooldown(copyBtn, duration = 2000) {
     const btn = copyBtn || document.getElementById('copyBtn');
     if (!btn) return;
@@ -296,6 +312,7 @@ function startCopyCooldown(copyBtn, duration = 2000) {
     }, duration);
 }
 
+// Copies the current password to clipboard with feedback.
 function copyPassword() {
     const passwordText = document.getElementById('passwordDisplay').textContent;
     const copyBtn = document.getElementById('copyBtn');
@@ -314,6 +331,7 @@ function copyPassword() {
     });
 }
 
+// Detects inputs so keyboard shortcuts don't interfere.
 function isTypingTarget(element) {
     if (!element) return false;
     const tag = element.tagName ? element.tagName.toLowerCase() : '';
@@ -321,6 +339,7 @@ function isTypingTarget(element) {
     return element.isContentEditable === true;
 }
 
+// Registers keyboard shortcuts for generate/copy.
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', (event) => {
         if (isTypingTarget(document.activeElement)) return;
@@ -342,6 +361,7 @@ function initKeyboardShortcuts() {
     });
 }
 
+// Bootstraps UI state and generates an initial password.
 window.addEventListener('load', function() {
     initThemeToggle();
     setModeUI();
