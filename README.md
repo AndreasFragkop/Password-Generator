@@ -2,6 +2,8 @@
 
 A client-side password and passphrase generator with theme toggle, strength meter, and copy support.
 
+![Password Generator](images/Password-generator.png)
+
 ## Features
 - Custom length (4-50) with guaranteed inclusion of selected character types
 - Uppercase, lowercase, numbers, symbols toggles
