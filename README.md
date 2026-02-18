@@ -4,14 +4,35 @@ A client-side password and passphrase generator with theme toggle, strength mete
 
 ![Password Generator](images/Password-generator.png)
 
-## Files
-- `index.html`
-- `style.css`
-- `script.js`
-- `images/Password-generator.png`
+## Project Structure
+```text
+password-generator/
+├── index.html                    # App markup
+├── style.css                     # Styling and themes
+├── script.js                     # Generation logic and UI behavior
+├── README.md                     # Project documentation
+└── images/
+    └── Password-generator.png    # README screenshot
+```
 
 ## Run
-Open `index.html` in your browser.
+1. Quick start: open `index.html` in your browser.
+2. Local server option:
+   - From `password-generator/`, run:
+     ```bash
+     python3 -m http.server 8000
+     ```
+   - Open `http://localhost:8000`.
+
+## Requirements
+- A modern web browser
+- Optional: Python 3 (only needed for local server mode)
+
+## Browser Support
+- Google Chrome (recent versions)
+- Microsoft Edge (recent versions)
+- Mozilla Firefox (recent versions)
+- Safari (recent versions)
 
 ## How to Use
 1. Choose a mode: Password or Passphrase.
@@ -40,6 +61,22 @@ Open `index.html` in your browser.
 - Cryptographically secure randomness via `crypto.getRandomValues`
 - Remembers theme preference with localStorage
 - Auto-generates a password on page load
+
+## Limitations
+- Strength is an estimate and not a guarantee of real-world resistance.
+- Entropy values are approximate and based on selected/generated character sets.
+- Browser clipboard permissions may affect copy behavior.
+
+## Privacy
+- Passwords and passphrases are generated locally in your browser.
+- No backend service is required for generation.
+- Theme preference is stored in localStorage.
+
+## Roadmap
+- Add customizable passphrase word lists.
+- Add export/import for generator presets.
+- Improve strength feedback explanations.
+- Add optional strict policy templates (e.g., enterprise defaults).
 
 ## Notes
 - Passwords are generated locally in the browser.
