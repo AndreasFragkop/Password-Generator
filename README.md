@@ -24,16 +24,6 @@ password-generator/
      ```
    - Open `http://localhost:8000`.
 
-## Requirements
-- A modern web browser
-- Optional: Python 3 (only needed for local server mode)
-
-## Browser Support
-- Google Chrome (recent versions)
-- Microsoft Edge (recent versions)
-- Mozilla Firefox (recent versions)
-- Safari (recent versions)
-
 ## How to Use
 1. Choose a mode: Password or Passphrase.
 2. Set the length (or word count for passphrases).
@@ -61,11 +51,6 @@ password-generator/
 - Cryptographically secure randomness via `crypto.getRandomValues`
 - Remembers theme preference with localStorage
 - Auto-generates a password on page load
-
-## Limitations
-- Strength is an estimate and not a guarantee of real-world resistance.
-- Entropy values are approximate and based on selected/generated character sets.
-- Browser clipboard permissions may affect copy behavior.
 
 ## Privacy
 - Passwords and passphrases are generated locally in your browser.
