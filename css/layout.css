@@ -1,0 +1,50 @@
+/*
+ * layout.css
+ * Structural layout styles: the main card container, header row,
+ * password output display, and the visibility utility class.
+ */
+
+/* Main card that wraps all app content. */
+.container {
+    background: var(--card);
+    padding: 36px 32px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+/* Header row — title on the left, theme toggle on the right. */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/*
+ * Password output area.
+ * Uses a monospace font so the output characters align uniformly.
+ * Right padding (54px) leaves space for a potential inline icon or copy hint.
+ * word-break + pre-wrap ensure long passwords wrap without losing whitespace
+ * (important for passphrases with spaces as separators).
+ */
+.password-display {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px 54px 16px 16px;
+    font-family: "JetBrains Mono", "Courier New", monospace;
+    font-size: 16px;
+    word-break: break-all;
+    white-space: pre-wrap;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: var(--text);
+}
+
+/* Utility class toggled by JS to show/hide mode-specific option rows. */
+.is-hidden {
+    display: none;
+}

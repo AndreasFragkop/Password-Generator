@@ -1,0 +1,81 @@
+/*
+ * feedback.css
+ * Visual feedback components: the toast notification, the strength meter bar,
+ * and the entropy estimate. Also includes the unused shortcut hint class.
+ */
+
+/* ─── Toast notification ────────────────────────────────────────────────── */
+
+/*
+ * The toast is hidden by default (opacity: 0, pointer-events: none) and
+ * slides up into view when the .show class is added by JS.
+ * translateY(12px) is the "resting" offset; translateY(0) is the visible position.
+ */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%) translateY(12px); /* Centred, slightly below final position. */
+    background: var(--text-strong);
+    color: var(--button-text);
+    padding: 12px 18px;
+    border-radius: 999px; /* Pill shape. */
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    opacity: 0;
+    pointer-events: none; /* Invisible toasts shouldn't block clicks. */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+/* Slide up and fade in when visible. */
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Error variant — red background for clipboard failures. */
+.toast.is-error {
+    background: #e35b5b;
+    color: #ffffff;
+}
+
+/* ─── Shortcut hint (currently unused in the HTML) ─────────────────────── */
+
+.shortcut-hint {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* ─── Strength meter ────────────────────────────────────────────────────── */
+
+/* Container holding the label row and the bar. Hidden until first generation. */
+.strength-meter {
+    margin-top: 16px;
+    text-align: left;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Track (background) of the progress bar. */
+.strength-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--meter-bg);
+    border-radius: 999px;
+    overflow: hidden; /* Clips the fill to the rounded track corners. */
+    margin: 8px 0 0;
+}
+
+/* Fill element — width and colour class are set dynamically by JS. */
+.strength-fill {
+    height: 100%;
+    transition: all 0.3s ease; /* Animates width and colour changes smoothly. */
+}
+
+/* Strength level colour coding. */
+.weak   { background: #e35b5b; } /* Red   — score 0–3 */
+.medium { background: #f2b642; } /* Amber — score 4–5 */
+.strong { background: #2eb67d; } /* Green — score 6+  */

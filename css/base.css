@@ -1,0 +1,32 @@
+/*
+ * base.css
+ * Global resets and base element styles.
+ * Establishes consistent sizing behaviour and core typography across the app.
+ */
+
+/* Ensure padding and borders are included in element dimensions everywhere. */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Page layout: centred single-column, full viewport height, themed background. */
+body {
+    font-family: "Space Grotesk", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 20px 64px; /* Extra bottom padding so the toast never overlaps content. */
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+}
+
+/* App title — left-aligned to sit alongside the theme toggle in the header row. */
+h1 {
+    text-align: left;
+    color: var(--text-strong);
+    margin: 0 0 24px;
+    font-size: 2rem;
+    letter-spacing: 0;
+}

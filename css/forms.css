@@ -1,0 +1,85 @@
+/*
+ * forms.css
+ * Styles for all form controls: option rows, number inputs,
+ * checkboxes, selects, and the mode radio group.
+ */
+
+/* ─── Option rows ───────────────────────────────────────────────────────── */
+
+/* Each setting is a horizontal row with a label on the left and a control on the right. */
+.option {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-soft);
+    gap: 16px;
+}
+
+/* Remove the divider from the last row so there's no trailing line before the button. */
+.option:last-of-type {
+    border-bottom: none;
+}
+
+.option label {
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* ─── Number inputs ─────────────────────────────────────────────────────── */
+
+input[type="number"] {
+    width: 96px;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+/* Shared focus ring for number inputs and selects — uses accent colour. */
+input[type="number"]:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ─── Checkboxes ────────────────────────────────────────────────────────── */
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent); /* Tints the native checkbox with the accent colour. */
+}
+
+/* ─── Selects ───────────────────────────────────────────────────────────── */
+
+select {
+    width: 140px;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+/* ─── Mode radio group ──────────────────────────────────────────────────── */
+
+/* Wraps the two radio buttons side by side. */
+.mode-options {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Each radio + label pair styled as an inline unit. */
+.radio-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
