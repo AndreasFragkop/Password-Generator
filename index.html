@@ -1,22 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
-    <!-- App styles -->
+    <!-- Single stylesheet entry point — imports all partials via @import -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header with title and theme toggle -->
+
+        <!-- ── Header ──────────────────────────────────────────────────── -->
+        <!-- Title on the left, theme toggle on the right. -->
         <div class="header">
             <h1>Password Generator</h1>
             <div class="theme-toggle">
                 <span class="theme-toggle-label">Theme</span>
+                <!--
+                    aria-pressed reflects the active state (false = light, true = dark).
+                    Updated dynamically by theme.js whenever the theme changes.
+                -->
                 <button class="theme-toggle-btn" id="themeToggle" type="button" aria-pressed="false">
                     <span class="theme-toggle-text" id="themeToggleText">Light</span>
+                    <!-- aria-hidden: the track/thumb are purely decorative. -->
                     <span class="theme-toggle-track" aria-hidden="true">
                         <span class="theme-toggle-thumb"></span>
                     </span>
@@ -24,7 +30,11 @@
             </div>
         </div>
 
-        <!-- Mode selector (password vs. passphrase) -->
+        <!-- ── Mode selector ───────────────────────────────────────────── -->
+        <!--
+            Switching mode hides/shows the relevant option rows below.
+            JS in mode.js reads input[name="mode"]:checked to get the active value.
+        -->
         <div class="option mode-toggle">
             <label>Mode:</label>
             <div class="mode-options">
@@ -38,20 +48,27 @@
                 </label>
             </div>
         </div>
-        
-        <!-- Password length input (hidden in passphrase mode) -->
+
+        <!-- ── Password options (visible in password mode) ─────────────── -->
+
+        <!-- Length input — hidden when passphrase mode is active. -->
         <div class="option" id="lengthOption">
             <label for="length">Password Length:</label>
             <input type="number" id="length" value="12" min="4" max="50">
         </div>
 
-        <!-- Passphrase word count (visible in passphrase mode) -->
+        <!-- ── Passphrase options (visible in passphrase mode) ─────────── -->
+
+        <!-- Word count — starts hidden; shown when passphrase mode is selected. -->
         <div class="option passphrase-option is-hidden" id="wordCountOption">
             <label for="wordCount">Word Count:</label>
             <input type="number" id="wordCount" value="4" min="2" max="10">
         </div>
 
-        <!-- Passphrase separator selector (visible in passphrase mode) -->
+        <!--
+            Separator picker — "random" picks a different separator for each gap.
+            "space" maps to a literal space character in JS (can't be an option value directly).
+        -->
         <div class="option passphrase-option is-hidden" id="separatorOption">
             <label for="separator">Separator:</label>
             <select id="separator">
@@ -62,53 +79,77 @@
                 <option value="space">Space</option>
             </select>
         </div>
-        
-        <!-- Character set toggles -->
+
+        <!-- ── Character set toggles (password mode only) ─────────────── -->
+
         <div class="option">
             <label for="uppercase">Include Uppercase Letters (A-Z)</label>
             <input type="checkbox" id="uppercase" checked>
         </div>
-        
+
         <div class="option">
             <label for="lowercase">Include Lowercase Letters (a-z)</label>
             <input type="checkbox" id="lowercase" checked>
         </div>
-        
+
         <div class="option">
             <label for="numbers">Include Numbers (0-9)</label>
             <input type="checkbox" id="numbers" checked>
         </div>
-        
+
         <div class="option">
             <label for="symbols">Include Symbols (!@#$%^&*)</label>
             <input type="checkbox" id="symbols">
         </div>
 
+        <!-- Removes O/0, l/1, I from the pool to avoid copy/read confusion. -->
         <div class="option">
             <label for="excludeSimilar">Exclude Similar Characters (O/0, l/1, I)</label>
             <input type="checkbox" id="excludeSimilar">
         </div>
 
-        <!-- Generate action -->
-        <button class="generate-btn" onclick="generatePassword()">Generate Password</button>
-        
-        <!-- Output display -->
+        <!-- ── Generate action ─────────────────────────────────────────── -->
+        <button class="generate-btn" id="generateBtn" type="button">Generate Password</button>
+
+        <!-- ── Output ──────────────────────────────────────────────────── -->
+        <!-- Populated by renderPassword() in display.js. -->
         <div class="password-display" id="passwordDisplay">
             Click "Generate Password" to create your secure password
         </div>
-        <!-- Strength + entropy meter -->
+
+        <!--
+            Strength meter — hidden until the first password is generated.
+            strengthFill width and class (.weak / .medium / .strong) are set by strength.js.
+        -->
         <div class="strength-meter" id="strengthMeter" style="display: none;">
             <div>Password Strength: <span id="strengthText">Medium</span> <span id="entropyText"></span></div>
             <div class="strength-bar">
                 <div class="strength-fill" id="strengthFill"></div>
             </div>
         </div>
-        <!-- Copy action and feedback -->
-        <button class="copy-btn-main" id="copyBtn" onclick="copyPassword()" data-default="Copy Password" style="display: none;">Copy Password</button>
+
+        <!-- ── Copy action ─────────────────────────────────────────────── -->
+        <!--
+            Hidden until a password exists (display toggled by renderPassword).
+            data-default stores the label to restore after the "Copied" cooldown.
+        -->
+        <button class="copy-btn-main" id="copyBtn" type="button" data-default="Copy Password" style="display: none;">Copy Password</button>
+
+        <!--
+            Toast notification — text and visibility are set by clipboard.js.
+            role="status" + aria-live="polite" announces the message to screen readers
+            without interrupting the user.
+        -->
         <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
     </div>
 
-    <!-- App logic -->
-    <script src="script.js"></script>
+    <!--
+        type="module" enables ES module imports in script.js.
+        Modules are deferred by default, so this runs after the DOM is parsed.
+        Note: modules require a local HTTP server — opening index.html directly
+        via file:// will fail with a CORS error on the import statements.
+    -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>

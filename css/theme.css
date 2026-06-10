@@ -1,0 +1,83 @@
+/*
+ * theme.css
+ * Design token definitions for both light and dark modes.
+ * All colours, backgrounds, and shadows are defined here as CSS custom
+ * properties so every other stylesheet can reference them by name.
+ * The active set is switched by toggling data-theme="dark" on <html>.
+ */
+
+/* ─── Light mode (default) ──────────────────────────────────────────────── */
+:root {
+    color-scheme: light;
+
+    /* Page background — soft radial gradient for depth */
+    --bg: radial-gradient(circle at top, #f7f7fb 0%, #eef1f6 45%, #e8edf4 100%);
+
+    /* Card surface */
+    --card: #ffffff;
+
+    /* Text hierarchy */
+    --text: #1c1f26;          /* Body text */
+    --text-strong: #111827;   /* Headings and emphasis */
+    --text-muted: #2f343d;    /* Labels and secondary text */
+
+    /* Borders */
+    --border: #e3e6ed;        /* Card and container outlines */
+    --border-soft: #eef0f4;   /* Subtle row dividers */
+
+    /* Form inputs */
+    --input-bg: #fafbfc;
+    --input-border: #d5dae3;
+
+    /* Accent colour used for focus rings, links, and the copy button */
+    --accent: #3b5bfd;
+    --accent-hover: #2f4ae6;
+
+    /* Primary action button (Generate) */
+    --button-bg: #111827;
+    --button-text: #ffffff;
+
+    /* Inner panel used for the password output display */
+    --panel: #f7f8fb;
+    --panel-border: #e0e5ef;
+
+    /* Strength meter bar track */
+    --meter-bg: #e6e9f0;
+
+    /* Card drop shadow */
+    --shadow: 0 16px 40px rgba(28, 31, 38, 0.08);
+}
+
+/* ─── Dark mode ─────────────────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: radial-gradient(circle at top, #1b1e27 0%, #141821 55%, #0f1219 100%);
+
+    --card: #171c24;
+
+    --text: #e6e9ef;
+    --text-strong: #f5f7fb;
+    --text-muted: #b7bfcc;
+
+    --border: #2a3242;
+    --border-soft: #232a38;
+
+    --input-bg: #0f141c;
+    --input-border: #2a3242;
+
+    /* Accent is lightened in dark mode for accessible contrast */
+    --accent: #8aa2ff;
+    --accent-hover: #6f8dff;
+
+    /* Generate button inverts to light in dark mode */
+    --button-bg: #f5f7fb;
+    --button-text: #111827;
+
+    --panel: #11161f;
+    --panel-border: #2a3242;
+
+    --meter-bg: #232a38;
+
+    --shadow: 0 18px 42px rgba(4, 8, 16, 0.45);
+}

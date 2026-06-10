@@ -1,0 +1,29 @@
+/*
+ * responsive.css
+ * Breakpoint overrides for narrow screens (mobile, small tablets).
+ * At 520px and below the layout switches to a stacked single-column flow.
+ */
+
+@media (max-width: 520px) {
+    /* Reduce card padding on small screens to reclaim horizontal space. */
+    .container {
+        padding: 28px 22px;
+    }
+
+    /* Slightly smaller heading so it doesn't crowd the theme toggle. */
+    h1 {
+        font-size: 1.7rem;
+    }
+
+    /* Stack label and control vertically in each option row. */
+    .option {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Stack the title and theme toggle vertically in the header. */
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

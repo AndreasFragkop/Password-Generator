@@ -1,0 +1,136 @@
+/*
+ * buttons.css
+ * Styles for all interactive buttons: the theme toggle, Generate, and Copy.
+ * Focus rings for all three are consolidated here to stay consistent.
+ */
+
+/* ─── Theme toggle ──────────────────────────────────────────────────────── */
+
+/* Wrapper that aligns the "Theme" label and the toggle button. */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-toggle-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* The toggle button itself — pill-shaped, contains the track and thumb. */
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px 6px 12px;
+    border-radius: 999px; /* Full pill shape. */
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.theme-toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.12);
+}
+
+/* Shared focus ring for all interactive buttons. */
+.theme-toggle-btn:focus-visible,
+.generate-btn:focus-visible,
+.copy-btn-main:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Uppercase micro-label inside the toggle button ("LIGHT" / "DARK"). */
+.theme-toggle-text {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* The pill-shaped slider track. */
+.theme-toggle-track {
+    position: relative;
+    width: 42px;
+    height: 22px;
+    background: var(--border);
+    border-radius: 999px;
+    padding: 2px;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+/* The circular thumb that slides left/right inside the track. */
+.theme-toggle-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--card);
+    transform: translateX(0);
+    transition: transform 0.2s;
+    box-shadow: 0 3px 8px rgba(17, 24, 39, 0.2);
+}
+
+/* When dark mode is active, fill the track with accent and slide the thumb right. */
+.theme-toggle-btn[aria-pressed="true"] .theme-toggle-track {
+    background: var(--accent);
+}
+
+.theme-toggle-btn[aria-pressed="true"] .theme-toggle-thumb {
+    transform: translateX(18px); /* Moves thumb to the right end of the 42px track. */
+}
+
+/* ─── Generate and Copy buttons — shared base ──────────────────────────── */
+
+.generate-btn,
+.copy-btn-main {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+/* Generate button uses the primary dark/light button token. */
+.generate-btn {
+    background: var(--button-bg);
+    color: var(--button-text);
+    margin: 24px 0 16px;
+}
+
+/* Copy button uses the accent colour to visually distinguish it from Generate. */
+.copy-btn-main {
+    background: var(--accent);
+    color: white;
+    margin-top: 12px;
+}
+
+/* Shared hover lift for both action buttons. */
+.generate-btn:hover,
+.copy-btn-main:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.2);
+}
+
+/* Copy button additionally shifts to the hover accent shade. */
+.copy-btn-main:hover {
+    background: var(--accent-hover);
+}
+
+/* Disabled state during the post-copy cooldown — removes hover effects. */
+.copy-btn-main:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
